@@ -4,20 +4,23 @@ package dev.simonit.gdx.cbor;
 import co.nstant.in.cbor.CborDecoder;
 import co.nstant.in.cbor.CborException;
 import co.nstant.in.cbor.model.*;
+import co.nstant.in.cbor.model.Array;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
-import com.badlogic.gdx.utils.SerializationException;
-import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.utils.*;
 
 import java.io.*;
 import java.util.List;
 
 public class CborReader extends JsonReader {
 
+	/**
+	 * Uses the provided base64 encoded string to parse a CBOR value.
+	 * @param base64 The base64 encoded string to parse
+	 * @return The parsed CBOR value
+	 */
 	@Override
-	public CborValue parse (String json) {
-		throw new UnsupportedOperationException("Can't parse CBOR from a string");
+	public CborValue parse (String base64) {
+		return parse(Base64Coder.decode(base64));
 	}
 
 	@Override
