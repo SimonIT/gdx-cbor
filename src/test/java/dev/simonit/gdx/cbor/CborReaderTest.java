@@ -1,13 +1,12 @@
 
 package dev.simonit.gdx.cbor;
 
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -135,5 +134,59 @@ class CborReaderTest {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[] {(byte)0xF6});
 		Object cborValue = json.fromJson(Object.class, inputStream);
 		assertNull(cborValue);
+	}
+
+	@Test
+	public void testCharFromString () {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[] {0x61, 0x5A});
+		char cborValue = json.fromJson(char.class, inputStream);
+		assertEquals('Z', cborValue);
+	}
+
+// @Test
+// public void testCharFromInt () {
+// ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[] {0x18, 0x5A});
+// char cborValue = json.fromJson(char.class, inputStream);
+// assertEquals('Z', cborValue);
+// }
+
+	@Test
+	public void testMap () {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[] {(byte)0xA4, 0x65, 0x76, 0x61, 0x6C, 0x75, 0x65,
+			0x63, 0x6B, 0x65, 0x79, (byte)0xF9, 0x3E, 0x00, 0x22, (byte)0xF5, (byte)0xF6, (byte)0xF4, (byte)0xA0});
+		assertThrows(SerializationException.class, () -> json.fromJson(ObjectMap.class, inputStream));
+// ObjectMap<Object, Object> cborValue =
+// assertEquals("key", cborValue.get("value"));
+// assertEquals(-3, cborValue.get(1.5f));
+// assertNull(cborValue.get(true));
+// assertEquals(JsonValue.ValueType.object, ((CborValue) cborValue.get(false)).type());
+	}
+
+	@Test
+	public void testFromReader () {
+		Reader reader = new StringReader(
+			"g6JlY2xhc3NxamF2YS5sYW5nLkludGVnZXJldmFsdWX7P/AAAAAAAACiZWNsYXNzcWphdmEubGFuZy5JbnRlZ2VyZXZhbHVl+0AAAAAAAAAAomVjbGFzc3FqYXZhLmxhbmcuSW50ZWdlcmV2YWx1ZftACAAAAAAAAA==");
+		Array<Integer> cborValue = json.fromJson(Array.class, reader);
+		assertEquals(1, cborValue.get(0));
+		assertEquals(2, cborValue.get(1));
+		assertEquals(3, cborValue.get(2));
+	}
+
+	@Test
+	public void testFromString () {
+		String base64 = "g6JlY2xhc3NxamF2YS5sYW5nLkludGVnZXJldmFsdWX7P/AAAAAAAACiZWNsYXNzcWphdmEubGFuZy5JbnRlZ2VyZXZhbHVl+0AAAAAAAAAAomVjbGFzc3FqYXZhLmxhbmcuSW50ZWdlcmV2YWx1ZftACAAAAAAAAA==";
+		Array<Integer> cborValue = json.fromJson(Array.class, base64);
+		assertEquals(1, cborValue.get(0));
+		assertEquals(2, cborValue.get(1));
+		assertEquals(3, cborValue.get(2));
+	}
+
+	@Test
+	public void testFromFileHandle () {
+		FileHandle file = new FileHandle(CborReaderTest.class.getResource("array1.cbor").getFile());
+		Array<Integer> cborValue = json.fromJson(Array.class, file);
+		assertEquals(1, cborValue.get(0));
+		assertEquals(2, cborValue.get(1));
+		assertEquals(3, cborValue.get(2));
 	}
 }

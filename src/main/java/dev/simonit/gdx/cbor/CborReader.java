@@ -13,11 +13,9 @@ import java.util.List;
 
 public class CborReader extends JsonReader {
 
-	/**
-	 * Uses the provided base64 encoded string to parse a CBOR value.
+	/** Uses the provided base64 encoded string to parse a CBOR value.
 	 * @param base64 The base64 encoded string to parse
-	 * @return The parsed CBOR value
-	 */
+	 * @return The parsed CBOR value */
 	@Override
 	public CborValue parse (String base64) {
 		return parse(Base64Coder.decode(base64));
@@ -37,9 +35,14 @@ public class CborReader extends JsonReader {
 		return parse(file.readBytes());
 	}
 
+	/** Parses the provided char array as Base64 encoded CBOR value.
+	 * @param data The char array to parse
+	 * @param offset The offset in the char array
+	 * @param length The length of the data to parse
+	 * @return The parsed CBOR value */
 	@Override
 	public CborValue parse (char[] data, int offset, int length) {
-		return parse(Utils.charsToBytes(data, offset, length));
+		return parse(new String(data, offset, length));
 	}
 
 	public CborValue parse (byte[] bytes) {
