@@ -27,4 +27,5 @@
     <!-- This is a good idea because so much GWT-specific code needs libGDX,
          like the libGDX reflection code. These "inherits" names are period-separated. -->
     <inherits name="com.badlogic.gdx.backends.gdx_backends_gwt" />
+    <inherits name="co.nstant.in.cbor"/>
 </module>
