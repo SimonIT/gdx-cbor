@@ -12,6 +12,7 @@ import co.nstant.in.cbor.model.SimpleValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.Null;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,6 +23,8 @@ import java.math.BigInteger;
 public class CborWriter extends JsonWriter {
 	protected AbstractBuilder<?> builder;
 	protected OutputStream outputStream;
+	/** If true, writes char values as strings, otherwise as integers. */
+	@Setter protected boolean writeCharAsString = true;
 
 	public CborWriter (OutputStream outputStream) {
 		super(new OutputStreamWriter(outputStream));
@@ -91,7 +94,11 @@ public class CborWriter extends JsonWriter {
 			} else if (value instanceof byte[]) {
 				builder = ((CborBuilder)builder).add((byte[])value);
 			} else if (value instanceof Character) {
-				builder = ((CborBuilder)builder).add(value.toString());
+				if (writeCharAsString) {
+					builder = ((CborBuilder)builder).add(value.toString());
+				} else {
+					builder = ((CborBuilder)builder).add((char)value);
+				}
 			} else {
 				throw new IllegalArgumentException("Unsupported value type: " + value.getClass());
 			}
@@ -111,7 +118,11 @@ public class CborWriter extends JsonWriter {
 			} else if (value instanceof byte[]) {
 				builder = ((ArrayBuilder<?>)builder).add((byte[])value);
 			} else if (value instanceof Character) {
-				builder = ((ArrayBuilder<?>)builder).add(value.toString());
+				if (writeCharAsString) {
+					builder = ((ArrayBuilder<?>)builder).add(value.toString());
+				} else {
+					builder = ((ArrayBuilder<?>)builder).add((char)value);
+				}
 			} else {
 				throw new IllegalArgumentException("Unsupported value type: " + value.getClass());
 			}
@@ -131,7 +142,11 @@ public class CborWriter extends JsonWriter {
 			} else if (value instanceof byte[]) {
 				builder = ((MapEntryBuilder<?>)builder).value((byte[])value);
 			} else if (value instanceof Character) {
-				builder = ((MapEntryBuilder<?>)builder).value(value.toString());
+				if (writeCharAsString) {
+					builder = ((MapEntryBuilder<?>)builder).value(value.toString());
+				} else {
+					builder = ((MapEntryBuilder<?>)builder).value((char)value);
+				}
 			} else {
 				throw new IllegalArgumentException("Unsupported value type: " + value.getClass());
 			}
