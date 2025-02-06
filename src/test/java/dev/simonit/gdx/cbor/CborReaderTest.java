@@ -143,12 +143,12 @@ class CborReaderTest {
 		assertEquals('Z', cborValue);
 	}
 
-// @Test
-// public void testCharFromInt () {
-// ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[] {0x18, 0x5A});
-// char cborValue = json.fromJson(char.class, inputStream);
-// assertEquals('Z', cborValue);
-// }
+	@Test
+	public void testCharFromInt () {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[] {0x18, 0x5A});
+		char cborValue = json.fromJson(char.class, inputStream);
+		assertEquals('Z', cborValue);
+	}
 
 	@Test
 	public void testMap () {
