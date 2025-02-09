@@ -200,12 +200,22 @@ public class CborWriterTest {
 	}
 
 	@Test
-	public void testWriteChar () throws IOException {
+	public void testWriteCharAsString () throws IOException {
 		json.getWriter().setOutputType(JsonWriter.OutputType.json);
 		json.writeValue('Z');
 		cborWriter.close();
 		byte[] bytes = outputStream.toByteArray();
 		assertArrayEquals(new byte[] {0x61, 0x5A}, bytes);
+	}
+
+	@Test
+	public void testWriteCharAsNumber () throws IOException {
+		cborWriter.setWriteCharAsString(false);
+		json.getWriter().setOutputType(JsonWriter.OutputType.json);
+		json.writeValue('Z');
+		cborWriter.close();
+		byte[] bytes = outputStream.toByteArray();
+		assertArrayEquals(new byte[] {0x18, 0x5A}, bytes);
 	}
 
 	@Test
