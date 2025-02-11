@@ -124,7 +124,7 @@ dependencies {
 	// Libraries that don't use libGDX directly can change the next line
 	// from `api` to `testImplementation` .
 	api "com.badlogicgames.gdx:gdx:$gdxVersion"
-	api "co.nstant.in:cbor:0.9"
+	api 'com.github.SimonIT:cbor-java:bfa48c0b36'//"co.nstant.in:cbor:0.9"
 	// "lwjgl3" could be changed to "headless" for command-line-only testing.
 	testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 	testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
