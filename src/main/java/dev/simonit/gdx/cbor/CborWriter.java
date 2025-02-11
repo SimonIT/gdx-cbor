@@ -22,13 +22,13 @@ import java.math.BigInteger;
 @Getter
 public class CborWriter extends JsonWriter {
 	protected AbstractBuilder<?> builder;
-	protected OutputStream outputStream;
+	protected CborEncoder encoder;
 	/** If true, writes char values as strings, otherwise as integers. */
 	@Setter protected boolean writeCharAsString = true;
 
 	public CborWriter (OutputStream outputStream) {
 		super(new OutputStreamWriter(outputStream));
-		this.outputStream = outputStream;
+		encoder = new CborEncoder(outputStream);
 		builder = new CborBuilder();
 	}
 
@@ -180,7 +180,7 @@ public class CborWriter extends JsonWriter {
 		while (!(builder instanceof CborBuilder))
 			pop();
 		try {
-			new CborEncoder(outputStream).encode(((CborBuilder)builder).build());
+			encoder.encode(((CborBuilder)builder).build());
 		} catch (CborException e) {
 			throw new IOException(e);
 		}
