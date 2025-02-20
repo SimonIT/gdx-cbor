@@ -1,35 +1,86 @@
-# Library Template using libGDX and Gradle 8.x
+# gdx-cbor
 
-Change this to fit your library!
+`gdx-cbor` is a Java library for encoding and decoding CBOR (Concise Binary Object Representation) data, specifically designed to work with libGDX.
+It uses the [cbor-java](https://github.com/cbor-java/cbor-java) library under the hood to encode and decode CBOR data.
 
-You'll want to edit gradle.properties to match your library's name, description, author, license, and so on.
-You probably also want to edit build.gradle to match the projectName and group to what you want to use.
+## Features
 
-You should "Find in Files" and search for any places that use the word "template" in order to find anything
-you will want to replace. The search should be case-insensitive.
+- Encode and decode CBOR data
+- Seamless integration with libGDX
+- Supports various data types including strings, numbers, arrays, and maps
 
-This includes some extra configuration so that you can deploy more easily to [JitPack](https://jitpack.io). If you're
-testing a specific commit and don't want to push a release to GitHub or Maven Central just to test (especially
-if testing by seeing if a user can build with your library), then JitPack is a great option. It can also be an
-excellent way of making GitHub releases available via Maven or Gradle dependencies. The `jitpack.yml` file this
-includes defaults to Java 21; you can potentially raise this as high as 23, though that might cause problems
-with Kotlin or libraries like Kryo, or as low as 11 (the minimum for the publishing plugin this uses). JDK 21
-may warn if you target Java 8, though this is only a warning. It has better generated JavaDocs than earlier
-versions, though, so using 21 seems good.
+## Installation
 
-Regardless of which JDK version JitPack uses to build, the default sourceCompatibility, targetCompatibility, and
-release are set to JDK 8, which supports many of the most convenient recent Java features, but not all. You can
-increase those to a higher version to get features like `var`, records, pattern matching, etc. but that typically
-will limit your library to being used by desktop builds (LWJGL 2 or 3, server, or headless). Using the language
-level of Java 8 is generally safe, but specific APIs added in Java 8 generally aren't available in RoboVM, GWT,
-or some versions of Android. You can go up to compatibility with 11 to get access to `var`, but then you lose
-all compatibility with RoboVM.
+Add the following to your `build.gradle` file:
 
-The test code, which goes in `src/test/java/`, uses compatibility with Java 8 by default, so you can use LWJGL3
-in tests out-of-the-box.
+```groovy
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+}
+```
 
-This currently uses Gradle 8.x; if you want an earlier version that uses 7.x,
-[here you go](https://github.com/simonit/gdx-cbor/releases/tag/v7.6)!
-Gradle 8.x seems to be fine for library code, and since approximately the middle of 2023, the tooling seems
-to have finally become capable of handling Gradle 8.x and Android/RoboVM projects. Your Android Gradle Plugin
-version should probably be 8.1.4 at this point; it may be able to go up soon as IDEA gets more support.
+```groovy
+dependencies {
+    implementation "dev.simonit:gdx-cbor:0.0.1"
+}
+```
+
+## Usage
+
+Because `gdx-cbor` is designed to work with libGDX, you can use the `Json` class to encode and decode CBOR data. The `CborReader` and `CborWriter` classes are used to read and write CBOR data, respectively. [More about libGDX Serializing and Deserializing](https://libgdx.com/wiki/utils/reading-and-writing-json)
+
+### Encoding Data
+
+```java
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import com.badlogic.gdx.utils.Json;
+import dev.simonit.gdx.cbor.CborWriter;
+
+public void encodeData(Object data) {
+	Json json = new Json();
+	OutputStream outputStream = new ByteArrayOutputStream();
+	CborWriter writer = new CborWriter(outputStream);
+	json.toJson(data, writer);
+	byte[] encodedData = outputStream.toByteArray();
+}
+```
+
+### Decoding Data
+
+```java
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import com.badlogic.gdx.utils.Json;
+import dev.simonit.gdx.cbor.CborReader;
+
+public void decodeData(byte[] data) {
+	Json json = new Json();
+	json.setReader(new CborReader());
+	InputStream inputStream = new ByteArrayInputStream(data);
+	Object obj = json.fromJson(Object.class, inputStream);
+}
+```
+
+#### Reading to DOM
+
+```java
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import dev.simonit.gdx.cbor.CborReader;
+import dev.simonit.gdx.cbor.CborValue;
+
+public void readCborData(byte[] data) {
+	InputStream inputStream = new ByteArrayInputStream(data);
+	CborValue root = new CborReader().parse(inputStream);
+}
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+## License
+
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for more information.
+
