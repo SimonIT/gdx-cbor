@@ -7,10 +7,12 @@ import co.nstant.in.cbor.model.*;
 import co.nstant.in.cbor.model.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.*;
+import lombok.Getter;
 
 import java.io.*;
 import java.util.List;
 
+@Getter
 public class CborReader extends JsonReader {
 
 	/** Uses the provided base64 encoded string to parse a CBOR value.
@@ -24,15 +26,21 @@ public class CborReader extends JsonReader {
 	@Override
 	public CborValue parse (InputStream input) {
 		try {
-			return parse(StreamUtils.copyStreamToByteArray(input));
-		} catch (IOException e) {
+			CborDecoder decoder = new CborDecoder(input);
+			List<DataItem> dataItems = decoder.decode();
+			if (dataItems.isEmpty()) {
+				return null;
+			} else {
+				return parseDataItem(dataItems.get(0));
+			}
+		} catch (CborException e) {
 			throw new SerializationException(e);
 		}
 	}
 
 	@Override
 	public CborValue parse (FileHandle file) {
-		return parse(file.readBytes());
+		return parse(file.read());
 	}
 
 	/** Parses the provided char array as Base64 encoded CBOR value.
@@ -46,16 +54,7 @@ public class CborReader extends JsonReader {
 	}
 
 	public CborValue parse (byte[] bytes) {
-		try {
-			List<DataItem> dataItems = CborDecoder.decode(bytes);
-			if (dataItems.isEmpty()) {
-				return null;
-			} else {
-				return parseDataItem(dataItems.get(0));
-			}
-		} catch (CborException e) {
-			throw new SerializationException(e);
-		}
+		return parse(new ByteArrayInputStream(bytes));
 	}
 
 	private CborValue parseDataItem (DataItem dataItem) {

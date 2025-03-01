@@ -128,7 +128,7 @@ public class CborWriter extends JsonWriter {
 			}
 		} else if (builder instanceof MapEntryBuilder) {
 			if (value == null) {
-				builder = ((MapEntryBuilder<?>)builder).value((byte[])null);
+				builder = ((MapEntryBuilder<?>)builder).value(SimpleValue.NULL);
 			} else if (value instanceof Float) {
 				builder = ((MapEntryBuilder<?>)builder).value((float)value);
 			} else if (value instanceof Double) {
