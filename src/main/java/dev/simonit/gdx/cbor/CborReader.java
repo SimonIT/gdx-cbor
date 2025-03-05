@@ -7,12 +7,10 @@ import co.nstant.in.cbor.model.*;
 import co.nstant.in.cbor.model.Array;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.*;
-import lombok.Getter;
 
 import java.io.*;
 import java.util.List;
 
-@Getter
 public class CborReader extends JsonReader {
 
 	/** Uses the provided base64 encoded string to parse a CBOR value.

@@ -11,25 +11,38 @@ import co.nstant.in.cbor.builder.MapEntryBuilder;
 import co.nstant.in.cbor.model.SimpleValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.Null;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 
-@Getter
 public class CborWriter extends JsonWriter {
 	protected AbstractBuilder<?> builder;
 	protected CborEncoder encoder;
 	/** If true, writes char values as strings, otherwise as integers. */
-	@Setter protected boolean writeCharAsString = true;
+	protected boolean writeCharAsString = true;
 
 	public CborWriter (OutputStream outputStream) {
 		super(new OutputStreamWriter(outputStream));
 		encoder = new CborEncoder(outputStream);
 		builder = new CborBuilder();
+	}
+
+	public AbstractBuilder<?> getBuilder () {
+		return builder;
+	}
+
+	public CborEncoder getEncoder () {
+		return encoder;
+	}
+
+	public boolean isWriteCharAsString () {
+		return writeCharAsString;
+	}
+
+	public CborWriter writeCharAsString (boolean writeCharAsString) {
+		this.writeCharAsString = writeCharAsString;
+		return this;
 	}
 
 	@Override

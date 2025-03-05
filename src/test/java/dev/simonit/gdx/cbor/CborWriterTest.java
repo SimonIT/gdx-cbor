@@ -210,7 +210,7 @@ public class CborWriterTest {
 
 	@Test
 	public void testWriteCharAsNumber () throws IOException {
-		cborWriter.setWriteCharAsString(false);
+		cborWriter.writeCharAsString(false);
 		json.getWriter().setOutputType(JsonWriter.OutputType.json);
 		json.writeValue('Z');
 		cborWriter.close();
