@@ -14,18 +14,26 @@ It uses the [cbor-java](https://github.com/cbor-java/cbor-java) library under th
 
 ## Installation
 
-Add the following to your `build.gradle` file:
-
-```groovy
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-}
-```
+Add the dependency to your core project:
 
 ```groovy
 dependencies {
     implementation "dev.simonit:gdx-cbor:0.0.1"
 }
+```
+
+### GWT
+
+To use `gdx-cbor` with GWT, you need to include the sources JAR in your project. Add the following to your `build.gradle` file:
+
+```groovy
+dependencies {
+    implementation "dev.simonit:gdx-cbor:0.0.1:sources"
+}
+```
+
+```xml
+<inherits name="dev.simonit.gdx-cbor"/>
 ```
 
 ## Usage
@@ -36,13 +44,12 @@ Because `gdx-cbor` is designed to work with libGDX, you can use the `Json` class
 
 ```java
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import com.badlogic.gdx.utils.Json;
 import dev.simonit.gdx.cbor.CborWriter;
 
 public void encodeData(Object data) {
 	Json json = new Json();
-	OutputStream outputStream = new ByteArrayOutputStream();
+	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	CborWriter writer = new CborWriter(outputStream);
 	json.toJson(data, writer);
 	byte[] encodedData = outputStream.toByteArray();
@@ -53,14 +60,13 @@ public void encodeData(Object data) {
 
 ```java
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import com.badlogic.gdx.utils.Json;
 import dev.simonit.gdx.cbor.CborReader;
 
 public void decodeData(byte[] data) {
 	Json json = new Json();
 	json.setReader(new CborReader());
-	InputStream inputStream = new ByteArrayInputStream(data);
+	ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 	Object obj = json.fromJson(Object.class, inputStream);
 }
 ```
@@ -69,12 +75,11 @@ public void decodeData(byte[] data) {
 
 ```java
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import dev.simonit.gdx.cbor.CborReader;
 import dev.simonit.gdx.cbor.CborValue;
 
 public void readCborData(byte[] data) {
-	InputStream inputStream = new ByteArrayInputStream(data);
+	ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 	CborValue root = new CborReader().parse(inputStream);
 }
 ```
