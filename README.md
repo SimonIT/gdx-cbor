@@ -18,19 +18,21 @@ Add the dependency to your core project:
 
 ```groovy
 dependencies {
-    implementation "dev.simonit:gdx-cbor:0.0.1"
+    implementation "dev.simonit:gdx-cbor:0.0.2"
 }
 ```
 
 ### GWT
 
-To use `gdx-cbor` with GWT, you need to include the sources JAR in your project. Add the following to your `build.gradle` file:
+To use `gdx-cbor` with GWT, you need to include the sources in your gwt project:
 
 ```groovy
 dependencies {
-    implementation "dev.simonit:gdx-cbor:0.0.1:sources"
+    implementation "dev.simonit:gdx-cbor:0.0.2:sources"
 }
 ```
+
+Then, add the following line to your GWT module (.gwt.xml) file:
 
 ```xml
 <inherits name="dev.simonit.gdx-cbor"/>
