@@ -3,7 +3,7 @@
 ![Maven Central Version](https://img.shields.io/maven-central/v/dev.simonit/gdx-cbor)
 [![Build and publish](https://github.com/SimonIT/gdx-cbor/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/SimonIT/gdx-cbor/actions/workflows/build-and-publish.yml)
 
-`gdx-cbor` is a Java library for encoding and decoding CBOR (Concise Binary Object Representation) data, specifically designed to work with libGDX.
+`gdx-cbor` is a Java library for encoding and decoding [CBOR (Concise Binary Object Representation)](https://cbor.io) data, specifically designed to work with libGDX.
 It uses the [cbor-java](https://github.com/cbor-java/cbor-java) library under the hood to encode and decode CBOR data.
 
 ## Features
