@@ -2,9 +2,12 @@
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/dev.simonit/gdx-cbor)
 [![Build and publish](https://github.com/SimonIT/gdx-cbor/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/SimonIT/gdx-cbor/actions/workflows/build-and-publish.yml)
+[![javadoc](https://javadoc.io/badge2/dev.simonit/gdx-cbor/javadoc.svg)](https://javadoc.io/doc/dev.simonit/gdx-cbor)
 
 `gdx-cbor` is a Java library for encoding and decoding [CBOR (Concise Binary Object Representation)](https://cbor.io) data, specifically designed to work with libGDX.
 It uses the [cbor-java](https://github.com/cbor-java/cbor-java) library under the hood to encode and decode CBOR data.
+
+> “The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.”
 
 ## Features
 
@@ -45,44 +48,37 @@ Because `gdx-cbor` is designed to work with libGDX, you can use the `Json` class
 ### Encoding Data
 
 ```java
-import java.io.ByteArrayOutputStream;
-import com.badlogic.gdx.utils.Json;
-import dev.simonit.gdx.cbor.CborWriter;
+import dev.simonit.gdx.cbor.Cbor;
 
 public void encodeData(Object data) {
-	Json json = new Json();
-	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	CborWriter writer = new CborWriter(outputStream);
-	json.toJson(data, writer);
-	byte[] encodedData = outputStream.toByteArray();
+	Cbor cbor = new Cbor();
+	byte[] encodedData = cbor.toCbor(data);
 }
 ```
+
+(all other `cbor.toJson()` methods also produce CBOR data!)
 
 ### Decoding Data
 
 ```java
-import java.io.ByteArrayInputStream;
-import com.badlogic.gdx.utils.Json;
-import dev.simonit.gdx.cbor.CborReader;
+import dev.simonit.gdx.cbor.Cbor;
 
 public void decodeData(byte[] data) {
-	Json json = new Json();
-	json.setReader(new CborReader());
-	ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-	Object obj = json.fromJson(Object.class, inputStream);
+	Cbor cbor = new Cbor();
+	Object obj = cbor.fromCbor(Object.class, data);
 }
 ```
+
+(all other `cbor.fromJson()` methods also read CBOR data!)
 
 #### Reading to DOM
 
 ```java
-import java.io.ByteArrayInputStream;
 import dev.simonit.gdx.cbor.CborReader;
 import dev.simonit.gdx.cbor.CborValue;
 
 public void readCborData(byte[] data) {
-	ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-	CborValue root = new CborReader().parse(inputStream);
+	CborValue root = new CborReader().parse(data);
 }
 ```
 

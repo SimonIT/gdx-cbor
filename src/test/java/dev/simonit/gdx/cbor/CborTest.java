@@ -16,18 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CborTest {
-	Json json;
-	CborWriter cborWriter;
+	Cbor json;
 	Test1 test;
-	ByteArrayOutputStream outputStream;
 
 	@BeforeEach
 	public void create () {
-		outputStream = new ByteArrayOutputStream();
-		json = new Json();
-		cborWriter = new CborWriter(outputStream);
-		json.setWriter(cborWriter);
-		json.setReader(new CborReader());
+		json = new Cbor();
 
 // json.fromJson(Test1.class, //
 // "{byteArrayField:[-1\n,-2]}"
@@ -227,27 +221,24 @@ public class CborTest {
 		if (!values.equals(Array.with("704643328", 0.543f, "704643584", 432.435f))) throw new RuntimeException();
 	}
 
-	private ByteArrayInputStream roundTrip (Object object) {
-		outputStream.reset();
-		json.toJson(object, cborWriter);
+	private byte[] roundTrip (Object object) {
+		byte[] cbor = json.toCbor(object);
 
-		ByteArrayInputStream text = new ByteArrayInputStream(outputStream.toByteArray());
-		check(text, object);
+		check(cbor, object);
 
-		return text;
+		return cbor;
 	}
 
 	private void testObjectGraph (TestMapGraph object, String typeName) {
-		Json json = new Json();
+		Cbor json = new Cbor();
 		json.setReader(new CborReader());
 		json.setTypeName(typeName);
 		json.setUsePrototypes(false);
 		json.setIgnoreUnknownFields(true);
 		json.setOutputType(OutputType.json);
-		outputStream.reset();
-		json.toJson(object, cborWriter);
+		byte[] cbor = json.toCbor(object);
 
-		TestMapGraph object2 = json.fromJson(TestMapGraph.class, new ByteArrayInputStream(outputStream.toByteArray()));
+		TestMapGraph object2 = json.fromCbor(TestMapGraph.class, cbor);
 
 		if (object2.map.size() != object.map.size()) {
 			throw new RuntimeException("Too many items in deserialized json map.");
@@ -262,16 +253,15 @@ public class CborTest {
 		}
 	}
 
-	private void check (ByteArrayInputStream text, Object object) {
-		Object object2 = json.fromJson(object.getClass(), text);
+	private void check (byte[] text, Object object) {
+		Object object2 = json.fromCbor(object.getClass(), text);
 		assertEquals(object, object2);
-		equals(object, outputStream.toByteArray());
+		equals(object, text);
 	}
 
 	private void equals (Object a, byte[] b) {
-		outputStream.reset();
-		json.toJson(a, cborWriter);
-		assertArrayEquals(outputStream.toByteArray(), b);
+		byte[] cbor = json.toCbor(a);
+		assertArrayEquals(cbor, b);
 	}
 
 	static public class Test1 {

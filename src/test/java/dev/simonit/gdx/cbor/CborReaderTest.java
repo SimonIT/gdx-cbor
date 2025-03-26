@@ -11,14 +11,11 @@ import java.io.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CborReaderTest {
-	Json json;
-	CborReader cborReader;
+	Cbor json;
 
 	@BeforeEach
 	public void setUp () {
-		json = new Json();
-		cborReader = new CborReader();
-		json.setReader(cborReader);
+		json = new Cbor();
 	}
 
 	@Test
