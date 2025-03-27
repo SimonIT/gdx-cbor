@@ -4,7 +4,7 @@
 [![Build and publish](https://github.com/SimonIT/gdx-cbor/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/SimonIT/gdx-cbor/actions/workflows/build-and-publish.yml)
 [![javadoc](https://javadoc.io/badge2/dev.simonit/gdx-cbor/javadoc.svg)](https://javadoc.io/doc/dev.simonit/gdx-cbor)
 
-`gdx-cbor` is a Java library for encoding and decoding [CBOR (Concise Binary Object Representation)](https://cbor.io) data, specifically designed to work with libGDX.
+`gdx-cbor` is a Java library for encoding and decoding [CBOR (Concise Binary Object Representation)](https://cbor.io) data, specifically designed to work with [libGDX](https://libgdx.com/).
 It uses the [cbor-java](https://github.com/cbor-java/cbor-java) library under the hood to encode and decode CBOR data.
 
 > “The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.”
@@ -14,6 +14,7 @@ It uses the [cbor-java](https://github.com/cbor-java/cbor-java) library under th
 - Encode and decode CBOR data
 - Seamless integration with libGDX
 - Supports various data types including strings, numbers, arrays, and maps
+- Easy integration with [gdx-websockets](https://github.com/MrStahlfelge/gdx-websockets) using [gdx-websocket-cbor](https://github.com/SimonIT/gdx-cbor/tree/main/gdx-websocket-cbor)
 
 ## Installation
 

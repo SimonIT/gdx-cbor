@@ -1,0 +1,5 @@
+
+dependencies {
+	api parent
+	api "com.github.MrStahlfelge.gdx-websockets:serialization:$wsVersion"
+}
