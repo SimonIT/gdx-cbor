@@ -11,6 +11,20 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 class CborValueTest {
 
 	@Test
+	void testCopyConstructor () {
+		CborValue original = new CborValue(JsonValue.ValueType.object);
+		original.addChild("key", new CborValue("value"));
+		original.addChild("key2", new CborValue(1.0));
+		original.addChild("key3", new CborValue(1L));
+		CborValue array = new CborValue(JsonValue.ValueType.array);
+		array.addChild(new CborValue(true));
+		array.addChild(new CborValue(JsonValue.ValueType.nullValue));
+		original.addChild("key4", array);
+		CborValue copy = new CborValue(original);
+		assertArrayEquals(original.toCbor(JsonWriter.OutputType.json), copy.toCbor(JsonWriter.OutputType.json));
+	}
+
+	@Test
 	void toCborString () {
 		CborValue cborValue = new CborValue("value");
 		byte[] bytes = cborValue.toCbor(JsonWriter.OutputType.json);

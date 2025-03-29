@@ -38,6 +38,27 @@ public class CborValue extends JsonValue {
 		super(value);
 	}
 
+	public CborValue (JsonValue value) {
+		super(value.type());
+		if (value.isObject()) {
+			for (JsonValue child = value.child(); child != null; child = child.next()) {
+				addChild(child.name(), new CborValue(child));
+			}
+		} else if (value.isArray()) {
+			for (JsonValue child = value.child(); child != null; child = child.next()) {
+				addChild(new CborValue(child));
+			}
+		} else if (value.isBoolean()) {
+			this.set(value.asBoolean());
+		} else if (value.isLong()) {
+			this.set(value.asLong(), value.asString());
+		} else if (value.isDouble()) {
+			this.set(value.asDouble(), value.asString());
+		} else if (value.isString()) {
+			this.set(value.asString());
+		}
+	}
+
 	public byte[] toCbor (JsonWriter.OutputType outputType) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(512);
 		CborWriter writer = new CborWriter(outputStream);
