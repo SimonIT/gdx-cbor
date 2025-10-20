@@ -171,7 +171,7 @@ public class CborWriter extends JsonWriter {
 
 	@Override
 	public CborWriter json (String json) throws IOException {
-		return this.value(json);
+		return (CborWriter)this.value(json); // For 1.14.0
 	}
 
 	@Override

@@ -126,7 +126,7 @@ public class CborReader extends JsonReader {
 					return cborTrue;
 				case NULL:
 					CborValue cborNull = new CborValue(JsonValue.ValueType.nullValue);
-					cborNull.set(null);
+					cborNull.set((String)null); // For 1.14.0
 					return cborNull;
 				}
 				break;
