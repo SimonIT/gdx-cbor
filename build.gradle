@@ -136,8 +136,7 @@ allprojects {
 		api "com.badlogicgames.gdx:gdx:$gdxVersion"
 		api 'com.github.SimonIT:cbor-java:bfa48c0b36'//"co.nstant.in:cbor:0.9"
 		// "lwjgl3" could be changed to "headless" for command-line-only testing.
-		// testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-		// testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+		// testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
 		testImplementation "org.junit.jupiter:junit-jupiter-api:5.11.4"
 		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.11.4"
 	}

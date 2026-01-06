@@ -159,7 +159,6 @@ public class CborTest {
 					System.out.print("   ");
 			}
 
-			@Override
 			protected void push (@Null String name, boolean object) {
 				indent();
 				if (object)
@@ -177,7 +176,6 @@ public class CborTest {
 				System.out.println(object ? '}' : ']');
 			}
 
-			@Override
 			protected void value (String name, String value, boolean unquoted) {
 				indent();
 				System.out.println(name != null ? name + ": " + value : value);
@@ -191,7 +189,10 @@ public class CborTest {
 			String id;
 			float watts;
 
-			@Override
+			protected void push (@Null JsonToken name, boolean object) {
+				push((String)null, object);
+			}
+
 			protected void push (String name, boolean object) {
 				level++;
 			}
@@ -207,7 +208,10 @@ public class CborTest {
 				level--;
 			}
 
-			@Override
+			protected void value (@Null JsonToken name, JsonToken value) {
+				value(name.toString(), value.toString(), false);
+			}
+
 			protected void value (String name, String value, boolean unquoted) {
 				if (level == 2) {
 					if (name.equals("eid"))

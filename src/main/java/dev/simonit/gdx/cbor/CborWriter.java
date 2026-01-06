@@ -47,12 +47,40 @@ public class CborWriter extends JsonWriter {
 
 	@Override
 	public CborWriter name (String name) throws IOException {
-		if (builder instanceof CborBuilder) {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).addKey(name);
+		} else if (builder instanceof CborBuilder) {
 			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
 		} else if (builder instanceof ArrayBuilder) {
 			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
-		} else if (builder instanceof MapBuilder) {
-			builder = ((MapBuilder<?>)builder).addKey(name);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	@Override
+	public CborWriter object (String name) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).putMap(name);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	@Override
+	public CborWriter array (String name) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).putArray(name);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
 		} else {
 			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
 		}
@@ -169,9 +197,211 @@ public class CborWriter extends JsonWriter {
 		return this;
 	}
 
+	public CborWriter value (int value) throws IOException {
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(value);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(value);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(value);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter value (long value) throws IOException {
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(value);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(value);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(value);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter value (float value) throws IOException {
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(value);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(value);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(value);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter value (double value) throws IOException {
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(value);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(value);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(value);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter value (String value) throws IOException {
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(value);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(value);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(value);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter value (boolean value) throws IOException {
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(value);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(value);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(value);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
 	@Override
 	public CborWriter json (String json) throws IOException {
-		return this.value((Object)json); // For 1.14.0
+		if (builder instanceof CborBuilder) {
+			builder = ((CborBuilder)builder).add(json);
+		} else if (builder instanceof ArrayBuilder) {
+			builder = ((ArrayBuilder<?>)builder).add(json);
+		} else if (builder instanceof MapEntryBuilder) {
+			builder = ((MapEntryBuilder<?>)builder).value(json);
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter set (String name, int value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).put(name, value);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter set (String name, long value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).put(name, value);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter set (String name, float value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).put(name, value);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter set (String name, double value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).put(name, value);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	@Override
+	public CborWriter set (String name, Object value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).addKey(name);
+			if (value == null) {
+				builder = ((MapEntryBuilder<?>)builder).value(SimpleValue.NULL);
+			} else if (value instanceof Float) {
+				builder = ((MapEntryBuilder<?>)builder).value((float)value);
+			} else if (value instanceof Double) {
+				builder = ((MapEntryBuilder<?>)builder).value((double)value);
+			} else if (value instanceof Number) {
+				builder = ((MapEntryBuilder<?>)builder).value(((Number)value).longValue());
+			} else if (value instanceof Boolean) {
+				builder = ((MapEntryBuilder<?>)builder).value((boolean)value);
+			} else if (value instanceof String) {
+				builder = ((MapEntryBuilder<?>)builder).value((String)value);
+			} else if (value instanceof byte[]) {
+				builder = ((MapEntryBuilder<?>)builder).value((byte[])value);
+			} else if (value instanceof Character) {
+				if (writeCharAsString) {
+					builder = ((MapEntryBuilder<?>)builder).value(value.toString());
+				} else {
+					builder = ((MapEntryBuilder<?>)builder).value((char)value);
+				}
+			} else {
+				throw new IllegalArgumentException("Unsupported value type: " + value.getClass());
+			}
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter set (String name, String value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).put(name, value);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
+	}
+
+	public CborWriter set (String name, boolean value) throws IOException {
+		if (builder instanceof MapBuilder) {
+			builder = ((MapBuilder<?>)builder).put(name, value);
+		} else if (builder instanceof CborBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on root");
+		} else if (builder instanceof ArrayBuilder) {
+			throw new IllegalStateException("Cannot set name \"" + name + "\" on array");
+		} else {
+			throw new IllegalStateException("Unexpected builder: " + builder.getClass());
+		}
+		return this;
 	}
 
 	@Override
