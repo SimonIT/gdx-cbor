@@ -2,21 +2,22 @@ buildscript {
 	repositories {
 		mavenLocal()
 		mavenCentral()
-		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		maven { url = 'https://central.sonatype.com/repository/maven-snapshots/' }
 		gradlePluginPortal()
 	}
 	dependencies {
-		classpath 'com.vanniktech:gradle-maven-publish-plugin:0.29.0'
+		classpath 'com.vanniktech:gradle-maven-publish-plugin:0.35.0'
 	}
 }
 
 plugins {
-	id("com.diffplug.spotless") version "7.0.2"
-	id "info.solidsoft.pitest" version "1.15.0"
-	id 'org.sonatype.gradle.plugins.scan' version '3.1.1'
-	id "me.champeau.jmh" version "0.7.2"
+	id("com.diffplug.spotless") version "8.1.0"
+	id "info.solidsoft.pitest" version '1.19.0-rc.2'
+	id 'org.sonatype.gradle.plugins.scan' version '3.1.4'
+	id "me.champeau.jmh" version "0.7.3"
 }
 
+import com.diffplug.spotless.LineEnding
 import com.vanniktech.maven.publish.JavaLibrary
 import com.vanniktech.maven.publish.JavadocJar
 
@@ -42,7 +43,7 @@ allprojects {
 	}
 
 	// This sets the Javadoc JAR to have hopefully the correct name. This may need adjustment.
-	mavenPlainJavadocJar.archiveBaseName.set(projectName)
+	plainJavadocJar.archiveBaseName.set(projectName)
 
 	// There's pretty much no reason to use any encoding other than UTF-8 .
 	[
@@ -120,13 +121,12 @@ allprojects {
 		// You can uncomment mavenLocal() if you need self-built versions, but it can be a problem with GWT or other sources dependencies.
 		mavenLocal()
 		mavenCentral()
-		maven { url 'https://s01.oss.sonatype.org' }
+		maven { url = 'https://s01.oss.sonatype.org' }
 		google()
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-		maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+		maven { url = 'https://central.sonatype.com/repository/maven-snapshots/' }
 		// JitPack is a good repo to have if you depend on commit versions.
 		// Having the below repo might cause problems if uploading to Maven Central.
-		maven { url 'https://jitpack.io' }
+		maven { url = 'https://jitpack.io' }
 	}
 
 	dependencies {
@@ -151,7 +151,7 @@ allprojects {
 	}
 
 	spotless {
-		lineEndings 'UNIX'
+		lineEndings LineEnding.UNIX
 
 		java {
 
